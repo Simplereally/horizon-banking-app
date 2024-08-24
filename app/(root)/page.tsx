@@ -1,9 +1,5 @@
 import HeaderBox from "@/components/HeaderBox";
 import RightSideBar from "@/components/RightSideBar";
-import TotalBalanceBox from "@/components/TotalBalanceBox";
-import Link from "next/link";
-import React from "react";
-import Image from "next/image";
 
 const Home = () => {
   const loggedIn = {

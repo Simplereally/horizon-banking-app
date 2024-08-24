@@ -1,7 +1,5 @@
-import React from "react";
-
 const SignIn = () => {
-  return <div>Sign In</div>;
+  return <section className="flex-center size-full max-sm:px-6"></section>;
 };
 
 export default SignIn;

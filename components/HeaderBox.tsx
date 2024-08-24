@@ -1,4 +1,3 @@
-import React from "react";
 import TotalBalanceBox from "./TotalBalanceBox";
 
 const HeaderBox = ({

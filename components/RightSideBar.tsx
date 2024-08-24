@@ -1,6 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
 import BankCard from "./BankCard";
 
 const RightSideBar = ({ user, transactions, banks }: RightSidebarProps) => {
