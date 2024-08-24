@@ -38,25 +38,13 @@ export const formatDateTime = (dateString: Date) => {
     hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
   };
 
-  const formattedDateTime: string = new Date(dateString).toLocaleString(
-    "en-US",
-    dateTimeOptions
-  );
+  const formattedDateTime: string = new Date(dateString).toLocaleString("en-US", dateTimeOptions);
 
-  const formattedDateDay: string = new Date(dateString).toLocaleString(
-    "en-US",
-    dateDayOptions
-  );
+  const formattedDateDay: string = new Date(dateString).toLocaleString("en-US", dateDayOptions);
 
-  const formattedDate: string = new Date(dateString).toLocaleString(
-    "en-US",
-    dateOptions
-  );
+  const formattedDate: string = new Date(dateString).toLocaleString("en-US", dateOptions);
 
-  const formattedTime: string = new Date(dateString).toLocaleString(
-    "en-US",
-    timeOptions
-  );
+  const formattedTime: string = new Date(dateString).toLocaleString("en-US", timeOptions);
 
   return {
     dateTime: formattedDateTime,
@@ -76,7 +64,7 @@ export function formatAmount(amount: number): string {
   return formatter.format(amount);
 }
 
-export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
+export const jsonParseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 export const removeSpecialCharacters = (value: string) => {
   return value.replace(/[^\w\s]/gi, "");
@@ -130,9 +118,7 @@ export function getAccountTypeColors(type: AccountTypes) {
   }
 }
 
-export function countTransactionCategories(
-  transactions: Transaction[]
-): CategoryCount[] {
+export function countTransactionCategories(transactions: Transaction[]): CategoryCount[] {
   const categoryCounts: { [category: string]: number } = {};
   let totalCount = 0;
 
@@ -155,13 +141,11 @@ export function countTransactionCategories(
     });
 
   // Convert the categoryCounts object to an array of objects
-  const aggregatedCategories: CategoryCount[] = Object.keys(categoryCounts).map(
-    (category) => ({
-      name: category,
-      count: categoryCounts[category],
-      totalCount,
-    })
-  );
+  const aggregatedCategories: CategoryCount[] = Object.keys(categoryCounts).map((category) => ({
+    name: category,
+    count: categoryCounts[category],
+    totalCount,
+  }));
 
   // Sort the aggregatedCategories array by count in descending order
   aggregatedCategories.sort((a, b) => b.count - a.count);
@@ -195,25 +179,31 @@ export const getTransactionStatus = (date: Date) => {
   return date > twoDaysAgo ? "Processing" : "Success";
 };
 
-export const authFormSchema = z
-  .object({
-    email: z.string().email(),
-    username: z.string().min(6, "Username must be at least 6 characters"),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
-        "Password must contain at least one number, one uppercase letter, and one special character"
-      ),
-    confirmPassword: z.string().min(1, "Please confirm your password"),
-  })
-  .refine(
-    (field) => {
-      return field.password === field.confirmPassword;
-    },
-    {
+export const authFormSchema = (type: string) =>
+  z
+    .object({
+      // sign in
+      email: z.string().email(),
+      password: z
+        .string()
+        .min(8, "Password must be at least 8 characters")
+        .regex(
+          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+          "Password must contain at least one number, one uppercase letter, and one special character"
+        ),
+
+      // + sign up
+      firstName: type === "sign-in" ? z.string().optional() : z.string().min(2).max(100),
+      lastName: type === "sign-in" ? z.string().optional() : z.string().min(2).max(100),
+      address1: type === "sign-in" ? z.string().optional() : z.string().min(5).max(100),
+      city: type === "sign-in" ? z.string().optional() : z.string().min(2).max(100),
+      state: type === "sign-in" ? z.string().optional() : z.string().min(1).max(50),
+      postalCode: type === "sign-in" ? z.string().optional() : z.string().min(1).max(50),
+      dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(1),
+      ssn: type === "sign-in" ? z.string().optional() : z.string().min(1),
+      confirmPassword: type === "sign-in" ? z.string().optional() : z.string().min(1),
+    })
+    .refine((field) => (type === "sign-up" ? field.password === field.confirmPassword : true), {
       message: "Passwords must match!",
       path: ["confirmPassword"],
-    }
-  );
+    });
