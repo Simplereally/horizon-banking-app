@@ -29,8 +29,7 @@ export const TEST_USER_ID = "6627ed3d00267aa6fa3e";
 //   "access-sandbox-da44dac8-7d31-4f66-ab36-2238d63a3017";
 
 // custom_user -> Chase Bank
-export const TEST_ACCESS_TOKEN =
-  "access-sandbox-229476cf-25bc-46d2-9ed5-fba9df7a5d63";
+export const TEST_ACCESS_TOKEN = "access-sandbox-229476cf-25bc-46d2-9ed5-fba9df7a5d63";
 
 export const ITEMS = [
   {
@@ -121,6 +120,12 @@ export const transactionCategoryStyles = {
     backgroundColor: "bg-gray-500",
     textColor: "text-[#344054]",
     chipBackgroundColor: "bg-[#F2F4F7]",
+  },
+  Travel: {
+    borderColor: "border-[#0047AB]",
+    backgroundColor: "bg-blue-500",
+    textColor: "text-blue-700",
+    chipBackgroundColor: "bg-[#ECFDF3]",
   },
   Success: {
     borderColor: "border-[#12B76A]",
